@@ -1,8 +1,13 @@
 import React from 'react';
 import './styles/global.css';
+import AddUser from './components/Users/AddUser';
 
 function App() {
-  return <div></div>;
+  return (
+    <div>
+      <AddUser />
+    </div>
+  );
 }
 
 export default App;
