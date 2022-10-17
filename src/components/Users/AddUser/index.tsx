@@ -4,11 +4,17 @@ import Card from '../../UI/Card';
 import Button from '../../UI/Button';
 import styles from './styles.module.css';
 import IUserModel from './../../../libs/models/user.model';
+import { v4 as uuidv4 } from 'uuid';
 
-const AddUser = () => {
+type TProps = {
+  onAddUser: (formData: IUserModel) => void;
+};
+
+const AddUser = ({ onAddUser }: TProps) => {
   const [enteredUser, setEnteredUser] = useState<IUserModel>({
     username: '',
     age: '',
+    id: '',
   });
 
   const addUserHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -22,10 +28,11 @@ const AddUser = () => {
     if (+enteredUser.age < 1) {
       return;
     }
-    console.log('enteredUser', enteredUser);
+    onAddUser(enteredUser);
     setEnteredUser({
       username: '',
       age: '',
+      id: '',
     });
   };
 
@@ -37,6 +44,7 @@ const AddUser = () => {
     setEnteredUser({
       ...(enteredUser ?? {}),
       [name]: value,
+      id: uuidv4(),
     });
   };
 
