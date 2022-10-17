@@ -6,6 +6,7 @@ import styles from './styles.module.css';
 import IUserModel from './../../../libs/models/user.model';
 import { v4 as uuidv4 } from 'uuid';
 import ErrorModal from '../../UI/ErrorModal';
+import IErrorModel from '../../../libs/models/error.model';
 
 type TProps = {
   onAddUser: (formData: IUserModel) => void;
@@ -17,6 +18,7 @@ const AddUser = ({ onAddUser }: TProps) => {
     age: '',
     id: '',
   });
+  const [error, setError] = useState<IErrorModel>();
 
   const addUserHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -24,9 +26,17 @@ const AddUser = ({ onAddUser }: TProps) => {
       enteredUser?.username.trim().length === 0 ||
       enteredUser?.age.trim().length === 0
     ) {
+      setError({
+        title: 'Invalid input',
+        message: 'Please enter a valid name and age (non-empty values).',
+      });
       return;
     }
     if (+enteredUser.age < 1) {
+      setError({
+        title: 'Invalid age',
+        message: 'Please enter a valid age (> 0).',
+      });
       return;
     }
     onAddUser(enteredUser);
@@ -49,9 +59,19 @@ const AddUser = ({ onAddUser }: TProps) => {
     });
   };
 
+  const errorHandler = () => {
+    setError(undefined);
+  };
+
   return (
     <>
-      <ErrorModal title="An error occured!" message="Something went wrong!" />
+      {error && (
+        <ErrorModal
+          title={error.title}
+          message={error.message}
+          onConfirm={errorHandler}
+        />
+      )}
       <Card className={styles.input}>
         <form onSubmit={addUserHandler}>
           <label htmlFor="username">Username</label>
@@ -70,7 +90,9 @@ const AddUser = ({ onAddUser }: TProps) => {
             onChange={onChangeHandler}
             value={enteredUser?.age || ''}
           />
-          <Button type="submit">Add User</Button>
+          <Button onClick={errorHandler} type="submit">
+            Add User
+          </Button>
         </form>
       </Card>
     </>

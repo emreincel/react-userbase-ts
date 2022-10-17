@@ -5,11 +5,12 @@ import styles from './styles.module.css';
 type TProps = {
   type?: 'submit' | 'reset' | 'button' | undefined;
   children: string;
+  onClick: () => void;
 };
 
-const Button = ({ type, children }: TProps) => {
+const Button = ({ type, children, onClick }: TProps) => {
   return (
-    <button className={styles.button} type={type || 'button'}>
+    <button onClick={onClick} className={styles.button} type={type || 'button'}>
       {children}
     </button>
   );

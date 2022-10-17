@@ -7,12 +7,13 @@ import Button from '../../UI/Button';
 type TProps = {
   title: string;
   message: string;
+  onConfirm: () => void;
 };
 
-const ErrorModal = ({ title, message }: TProps) => {
+const ErrorModal = ({ title, message, onConfirm }: TProps) => {
   return (
     <>
-      <div className={styles.backdrop} />
+      <div className={styles.backdrop} onClick={onConfirm} />
       <Card className={styles.modal}>
         <div>
           <header className={styles.header}>
@@ -22,7 +23,7 @@ const ErrorModal = ({ title, message }: TProps) => {
             <p>{message}</p>
           </div>
           <footer className={styles.actions}>
-            <Button>Okay</Button>
+            <Button onClick={onConfirm}>Okay</Button>
           </footer>
         </div>
       </Card>
