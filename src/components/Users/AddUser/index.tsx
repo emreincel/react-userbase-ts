@@ -18,7 +18,7 @@ const AddUser = ({ onAddUser }: TProps) => {
     age: '',
     id: '',
   });
-  const [error, setError] = useState<IErrorModel>();
+  const [error, setError] = useState<IErrorModel | null>(null);
 
   const addUserHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -60,7 +60,7 @@ const AddUser = ({ onAddUser }: TProps) => {
   };
 
   const errorHandler = () => {
-    setError(undefined);
+    setError(null);
   };
 
   return (
