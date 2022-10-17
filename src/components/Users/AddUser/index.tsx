@@ -5,6 +5,7 @@ import Button from '../../UI/Button';
 import styles from './styles.module.css';
 import IUserModel from './../../../libs/models/user.model';
 import { v4 as uuidv4 } from 'uuid';
+import ErrorModal from '../../UI/ErrorModal';
 
 type TProps = {
   onAddUser: (formData: IUserModel) => void;
@@ -49,27 +50,30 @@ const AddUser = ({ onAddUser }: TProps) => {
   };
 
   return (
-    <Card className={styles.input}>
-      <form onSubmit={addUserHandler}>
-        <label htmlFor="username">Username</label>
-        <input
-          name="username"
-          id="username"
-          type="text"
-          onChange={onChangeHandler}
-          value={enteredUser?.username || ''}
-        />
-        <label htmlFor="age">Age (years)</label>
-        <input
-          name="age"
-          id="age"
-          type="text"
-          onChange={onChangeHandler}
-          value={enteredUser?.age || ''}
-        />
-        <Button type="submit">Add User</Button>
-      </form>
-    </Card>
+    <>
+      <ErrorModal title="An error occured!" message="Something went wrong!" />
+      <Card className={styles.input}>
+        <form onSubmit={addUserHandler}>
+          <label htmlFor="username">Username</label>
+          <input
+            name="username"
+            id="username"
+            type="text"
+            onChange={onChangeHandler}
+            value={enteredUser?.username || ''}
+          />
+          <label htmlFor="age">Age (years)</label>
+          <input
+            name="age"
+            id="age"
+            type="text"
+            onChange={onChangeHandler}
+            value={enteredUser?.age || ''}
+          />
+          <Button type="submit">Add User</Button>
+        </form>
+      </Card>
+    </>
   );
 };
 
