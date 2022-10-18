@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import Card from '../../UI/Card';
 import Button from '../../UI/Button';
@@ -13,6 +13,9 @@ type TProps = {
 };
 
 const AddUser = ({ onAddUser }: TProps) => {
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const ageInputRef = useRef<HTMLInputElement>(null);
+
   const [enteredUser, setEnteredUser] = useState<IUserModel>({
     username: '',
     age: '',
@@ -22,9 +25,13 @@ const AddUser = ({ onAddUser }: TProps) => {
 
   const addUserHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const enteredName = usernameInputRef.current?.value;
+    const enteredUserAge = ageInputRef.current?.value;
+
     if (
-      enteredUser?.username.trim().length === 0 ||
-      enteredUser?.age.trim().length === 0
+      enteredName?.trim().length === 0 ||
+      enteredUserAge?.trim().length === 0
     ) {
       setError({
         title: 'Invalid input',
@@ -32,13 +39,16 @@ const AddUser = ({ onAddUser }: TProps) => {
       });
       return;
     }
-    if (+enteredUser.age < 1) {
-      setError({
-        title: 'Invalid age',
-        message: 'Please enter a valid age (> 0).',
-      });
-      return;
+    if (enteredUserAge !== undefined) {
+      if (+enteredUserAge < 1) {
+        setError({
+          title: 'Invalid age',
+          message: 'Please enter a valid age (> 0).',
+        });
+        return;
+      }
     }
+
     onAddUser(enteredUser);
     setEnteredUser({
       username: '',
@@ -81,6 +91,7 @@ const AddUser = ({ onAddUser }: TProps) => {
             type="text"
             onChange={onChangeHandler}
             value={enteredUser?.username || ''}
+            ref={usernameInputRef}
           />
           <label htmlFor="age">Age (years)</label>
           <input
@@ -89,6 +100,7 @@ const AddUser = ({ onAddUser }: TProps) => {
             type="text"
             onChange={onChangeHandler}
             value={enteredUser?.age || ''}
+            ref={ageInputRef}
           />
           <Button onClick={errorHandler} type="submit">
             Add User
